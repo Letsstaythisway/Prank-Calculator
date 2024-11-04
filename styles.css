@@ -1,7 +1,7 @@
 :root {
   --primaryClr: skyblue;
   --secondaryClr: rgb(149, 128, 149);
-  --tertiaryClr: rgb(214, 214, 148);
+  --tertiaryClr: rgb(183, 183, 84);
 }
 
 body {
@@ -22,9 +22,22 @@ body {
   padding: 2rem 1.5rem;
   border-radius: 1rem;
   box-shadow: 0px 0px 20px 10px rgb(9, 32, 107);
+
+  display: grid;
+
+  display: grid;
+  gap: 1rem;
+  grid-template-areas:
+    "display display display display"
+    "ac c per divide"
+    "b7 b8 b9 multi"
+    "b4 b5 b6 minus"
+    "b1 b2 b3 plus"
+    "b0 dot ans ans";
 }
 
 .display {
+  grid-area: display;
   background-color: var(--secondaryClr);
   height: 50px;
   display: flex;
@@ -38,12 +51,90 @@ body {
   background: var(--tertiaryClr);
   margin: 1rem;
   height: 50px;
+
   display: grid;
   justify-content: center;
   align-items: center;
 }
+/* .calculator .btn {
+  background: var(--tertiaryClr);
+  margin: 1rem;
+  height: 50px;
+
+  display: grid;
+  justify-content: center;
+  align-items: center;
+
+  display: grid;
+  gap: 1rem;
+  grid-template-areas:
+    "display display display display"
+    ""
+    ""
+    ""
+    ""
+    "";
+} */
 
 .calculator .btn:hover {
   cursor: pointer;
   background-color: var(--secondaryClr);
+}
+
+.btn-ac {
+  grid-area: ac;
+}
+.btn-c {
+  grid-area: c;
+}
+.btn-per {
+  grid-area: per;
+}
+.btn-divide {
+  grid-area: divide;
+}
+.btn-7 {
+  grid-area: b7;
+}
+.btn-8 {
+  grid-area: b8;
+}
+.btn-9 {
+  grid-area: b9;
+}
+.btn-x {
+  grid-area: multi;
+}
+.btn-4 {
+  grid-area: b4;
+}
+.btn-5 {
+  grid-area: b5;
+}
+.btn-6 {
+  grid-area: b6;
+}
+.btn-minus {
+  grid-area: minus;
+}
+.btn-1 {
+  grid-area: b1;
+}
+.btn-2 {
+  grid-area: b2;
+}
+.btn-3 {
+  grid-area: b3;
+}
+.btn-plus {
+  grid-area: plus;
+}
+.btn-0 {
+  grid-area: b0;
+}
+.btn-dot {
+  grid-area: dot;
+}
+.btn-equals {
+  grid-area: ans;
 }
