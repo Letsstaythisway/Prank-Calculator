@@ -33,7 +33,7 @@ body {
     "b7 b8 b9 multi"
     "b4 b5 b6 minus"
     "b1 b2 b3 plus"
-    "b0 dot ans ans";
+    "b0 dot dot ans";
 }
 
 .display {
@@ -125,7 +125,22 @@ body {
   grid-area: ans;
 }
 
-.btn-equals:hover {
-  cursor: pointer;
-  background-color: var(--secondaryClr);
+.prank {
+  animation: shape 0.2s ease-in;
+}
+
+@keyframes shape {
+  0% {
+    transform: translateX(10px);
+  }
+  50% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+
+  100% {
+    transform: translateX(-10px);
+  }
 }
