@@ -1,102 +1,117 @@
-// create a function to get the value out of the btn
-// add even listener to click to trigger the function
-// read the value of the btn
-// store all the value coming from clicking in a global variable
-// create a function will take the alue for global variable and displays all the result in the display element
+const allButtonsElm = document.querySelectorAll(".btn");
 
 let strToDisplay = "";
-let displayElm = document.querySelector(".display");
-//select all the buttons
-const btns = document.querySelectorAll(".btn");
+const displayElm = document.querySelector(".display");
+
+const operators = ["%", "/", "*", "-", "+"];
+
 let lastOperator = "";
-const operators = " %/+-*";
-const audio = new Audio("./assets/sound1.mp3");
 
-btns.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    displayElm.style.background = "";
-    displayElm.style.color = "";
-    displayElm.classList.remove("prank");
-    const val = btn.innerText;
+//Load the audio
+const audio = new Audio("./assets/aa.wav");
 
-    if (val === "AC") {
-      strToDisplay = "";
-      display();
+const buttonAction = (value) => {
+  displayElm.classList.remove("prank");
+
+  if (value === "AC") {
+    strToDisplay = "";
+    display();
+    return;
+  }
+
+  if (value === "C") {
+    strToDisplay = strToDisplay.slice(0, -1);
+    return display(strToDisplay);
+  }
+
+  if (value === "=" || value === "Enter") {
+    lastOperator = "";
+    //get the last char
+    const lastChar = strToDisplay[strToDisplay.length - 1];
+
+    // check if it is one of the operators
+    if (operators.includes(lastChar)) {
+      strToDisplay = strToDisplay.slice(0, -1);
+    }
+
+    return displayTotal();
+  }
+
+  // show only last clicked operator
+  if (operators.includes(value)) {
+    lastOperator = value;
+    //get the last char
+    const lastChar = strToDisplay[strToDisplay.length - 1];
+
+    if (operators.includes(lastChar)) {
+      strToDisplay = strToDisplay.slice(0, -1);
+    }
+  }
+
+  //handle the dot click
+
+  if (value === ".") {
+    const lastOperatorIndex = strToDisplay.lastIndexOf(lastOperator);
+
+    const lastNumebrSet = strToDisplay.slice(lastOperatorIndex);
+
+    if (lastNumebrSet.includes(".")) {
       return;
     }
 
-    if (val === "=") {
-      const lastChar = strToDisplay[strToDisplay.length - 1];
-
-      if (operators.includes(lastChar)) {
-        strToDisplay = strToDisplay.slice(0, -1);
-      }
-
-      return displaytotal();
+    if (!lastOperator && strToDisplay.includes(".")) {
+      return;
     }
+  }
 
-    if (val === "C") {
-      strToDisplay = strToDisplay.slice(0, -1);
-      return display(strToDisplay);
-    }
+  strToDisplay += value;
 
-    if (operators.includes(val)) {
-      lastOperator = val;
-      const lastChar = strToDisplay[strToDisplay.length - 1];
-      if (operators.includes(lastChar)) {
-        strToDisplay = strToDisplay.slice(0, -1);
-      }
-    }
+  display(strToDisplay);
+};
 
-    if (val === ".") {
-      //when there is an operator
-      const indexOfLastOperator = strToDisplay.lastIndexOf(lastOperator);
-      const lastNumberSet = strToDisplay.slice(indexOfLastOperator);
-      console.log(indexOfLastOperator, lastNumberSet);
+//attache click event to all the buttons
+allButtonsElm.forEach((btn) => {
+  btn.addEventListener("mousedown", () => {
+    btn.style.scale = ".9";
+  });
 
-      if (lastNumberSet.includes(".")) return;
-      //when there is no operator
-      if (!lastOperator && strToDisplay.includes(".")) return;
-    }
-
-    strToDisplay += val;
-    display(strToDisplay);
-    // console.log(strToDisplay);
+  btn.addEventListener("click", () => {
+    btn.style.scale = "1";
+    const value = btn.innerText;
+    buttonAction(value);
   });
 });
 
+// update clicked button value to display area
 const display = (str) => {
-  displayElm.innerText = str;
+  displayElm.innerText = str || "0.0";
 };
 
-const total = () => {
-  if (!strToDisplay.length) return;
-
-  const extraVal = randomNumber();
-  if (extraVal) {
-    displayElm.style.background = "red";
-    displayElm.style.color = "white";
+// calculate total
+const displayTotal = () => {
+  const extraValue = randomValue();
+  if (extraValue) {
     displayElm.classList.add("prank");
     audio.play();
   }
-  const ttl = eval(strToDisplay) + extraVal;
-  strToDisplay = ttl.toString();
-  display(ttl);
+
+  const total = eval(strToDisplay) + extraValue;
+
+  strToDisplay = total.toString();
+  display(strToDisplay);
 };
 
-const randomNumber = () => {
-  const num = Math.round(Math.random() * 10);
-  return num < 10 ? num : 0;
+const randomValue = () => {
+  const num = Math.round(Math.random() * 10); // 0 - 10
+  return num < 4 ? num : 0;
 };
 
-document.addEventListener("keydown", (e) => {
-  const val = e.key;
-
-  if (e.code.includes("key")) {
-    console.log("it's not a number");
+// Binding keyboard with browser app
+document.addEventListener("keypress", (e) => {
+  console.log(e);
+  const value = e.key;
+  if (e.code.includes("Key")) {
     return;
   }
-  if (e.code.includes("Digit")) {
-    console.log("it's number");
-  }
+  buttonAction(value);
 });
